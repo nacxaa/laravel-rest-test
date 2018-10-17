@@ -58,7 +58,7 @@ RUN touch /var/log/cron.log
 #RUN chmod +x /etc/cron.d/artisan-schedule-run
 #RUN touch /var/log/cron.log
 
-RUN echo "DB_HOST=myapp_mysql_1\n\
+RUN echo "DB_HOST=laravel-rest-test_mysql_1\n\
 DB_DATABASE=laravelrest\n\
 DB_PORT=3306\n\
 DB_PASSWORD=test123" | cat - .env > temp && mv temp .env
