@@ -40,8 +40,12 @@ class OrderController extends Controller
             'sent' => 'required'
         ]);
 
+        $ip = '';
+        if(isset($request->all()['ip'])) $ip = $request->all()['ip'];
+        $country = $this->getGeoIP($ip);
 
-        $validator->after(function($validator) use ($request) {
+
+        $validator->after(function($validator) use ($request, $country, $ip) {
             $totalPrice = 0;
             if(!isset($request->all()['items']) || !is_array($request->all()['items']) || count($request->all()['items']) < 1) {
                 $validator->errors()->add('items', 'Order cannot be empty');
@@ -54,12 +58,11 @@ class OrderController extends Controller
                     }
                     $totalPrice += $pr['quantity'] * (0+$product[0]['price']);
                 }
-    //            print_r($totalPrice);
                 if ($totalPrice < $this->minOrderSum) {
                     $validator->errors()->add('totalPrice', 'Ordered products total price cannot be less then '.$this->minOrderSum);
                 }
 
-                $orders_count = Order::whereRaw('created_at >= DATE_ADD("'.now().'", INTERVAL -1 MINUTE)')->count();
+                $orders_count = Order::where('country', $country)->whereRaw('created_at >= DATE_ADD("'.now().'", INTERVAL -1 MINUTE)')->count();
                 if($orders_count >= $this->maxOrdersPerMinute) {
                     $validator->errors()->add('order', 'You submit orders too fast');
                 }
@@ -68,21 +71,14 @@ class OrderController extends Controller
         });
 
         $validator->validate();
-//print_r($request->all());
-
-        $ip = '';
-        if(isset($request->all()['ip'])) $ip = $request->all()['ip'];
-//        echo $this->getGeoIP($ip);
 
         $order = Order::create([
             'status' => 'new',
-            'country' => $this->getGeoIP($ip),
+            'country' => $country,
         ]);
         foreach($request->all()['items'] AS $pr) {
             $order->products()->attach($pr['productId'], ['quantity'=>$pr['quantity']]);
         }
-
-//        Order::create($request->all());
 
         return ''; //$order;
     }

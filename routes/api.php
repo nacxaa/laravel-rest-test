@@ -31,14 +31,12 @@ Route::get('orders', function() {
 
 // list all Orders by productType - eager load with parameters
 Route::get('ordersByType/{type}', function($type) {
-    //DB::enableQueryLog();
     $orders = App\Order::with('products')
     ->whereHas('products', function($query) use ($type)
         {
             $query->where('productType', '=', $type);
         }, ">=", 1)
     ->get();
-    //dd(DB::getQueryLog());
     return $orders;
 });
 

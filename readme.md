@@ -23,10 +23,10 @@ This POST endpoint creates new order. Here 'sent' is obligatory, 'items' contain
 ## Installation
 Application uses Docker for deployment. Three containers used: nginx proxy, php fpm for application, mysql for db.
 1. Download, build and run. Containers should be up and running exposing default ports (80, 443, 3306) on localhost.
-- git clone https://github.com/nacxaa/laravel-rest-test.git
-- cd laravel-rest-test
+- git clone https://github.com/nacxaa/laravelresttest.git
+- cd laravelresttest
 - docker-compose build
 - docker-compose up
 2. Initialize database (if running for the first time) — create db, run migrations and data seed.
-- docker exec myapp_app_1 sh deploy/db.sh
+- docker exec laravelresttest_app_1 sh deploy/db.sh
 3. Done. Use application using browser, curl or frontend framework.
