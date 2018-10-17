@@ -27,6 +27,6 @@ Application uses Docker for deployment. Three containers used: nginx proxy, php 
 - cd laravel-rest-test
 - docker-compose build
 - docker-compose up
-2. Initialize database (if running for the first time) — migration and data seed.
+2. Initialize database (if running for the first time) — create db, run migrations and data seed.
 - docker exec myapp_app_1 sh deploy/db.sh
 3. Done. Use application using browser, curl or frontend framework.
