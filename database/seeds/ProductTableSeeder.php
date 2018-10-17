@@ -33,7 +33,6 @@ class ProductTableSeeder extends Seeder
                 'color' => $colors[array_rand($colors)],
                 'size' => $sizes[array_rand($sizes)],
             ]);
-            //echo $prod->id."\n";
         }
         Schema::enableForeignKeyConstraints();
     }

@@ -37,7 +37,6 @@ class OrdersTableSeeder extends Seeder
                 $order->products()->attach($prods[array_rand($prods)]['id'], ['quantity'=>rand(1,100)]);
             }
 
-            //echo $order->id."\n";
         }
         Schema::enableForeignKeyConstraints();
     }
